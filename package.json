@@ -13,12 +13,10 @@
     "devDependencies": {
         "ava": "^0.25.0",
         "ts-node": "^7.0.1",
-        "typescript": "^3.0.1",
-        "vue-class-component": "^6.2.0"
+        "typescript": "^3.0.1"
     },
     "dependencies": {
-        "reflect-metadata": "^0.1.12",
-        "vue": "^2.5.17"
+        "reflect-metadata": "^0.1.12"
     },
     "ava": {
         "files": [
