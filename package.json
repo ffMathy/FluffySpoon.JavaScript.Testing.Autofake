@@ -1,5 +1,5 @@
 {
-    "name": "@fluffy-spoon/autofaker",
+    "name": "@fluffy-spoon/autofake",
     "version": "1.0.0",
     "description": "",
     "main": "dist/src/Index.js",
