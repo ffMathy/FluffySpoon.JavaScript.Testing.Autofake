@@ -1,4 +1,4 @@
-type Constructor<T = any> = { new(): T };
+type Constructor<T = any> = { new(...args): T };
 
 export class Autofaker {
     private _registration: InversionOfControlRegistration;

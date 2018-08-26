@@ -1,5 +1,5 @@
 declare type Constructor<T = any> = {
-    new (): T;
+    new (...args: any[]): T;
 };
 export declare class Autofaker {
     private _registration;
