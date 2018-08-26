@@ -8,11 +8,11 @@ export declare class Autofaker {
     constructor();
     useInversionOfControlProvider(provider: InversionOfControlRegistration): void;
     registerFakesForConstructorParameterTypesOf<T extends Constructor>(type: T): void;
-    resolveFakeInstance<T extends Constructor>(type: T): ObjectSubstitute<OmitProxyMethods<T>, T>;
-    resolveInstance<T extends Constructor>(type: T): T;
+    resolveFakeInstance<T>(type: Constructor<T>): ObjectSubstitute<OmitProxyMethods<T>, T>;
+    resolveInstance<T>(type: Constructor<T>): T;
 }
 export declare abstract class InversionOfControlRegistration {
     abstract registerTypeAsInstanceFromAccessor(type: Constructor<any>, accessor: () => any): void;
     abstract getConstructorArgumentTypesForClass<T extends Constructor>(type: T): Array<Constructor>;
-    abstract resolveInstance<T extends Constructor>(type: T): T;
+    abstract resolveInstance<T>(type: Constructor<T>): T;
 }

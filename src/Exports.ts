@@ -39,7 +39,7 @@ export class Autofaker {
         }
     }
 
-    resolveFakeInstance<T extends Constructor>(type: T): ObjectSubstitute<OmitProxyMethods<T>, T> {
+    resolveFakeInstance<T>(type: Constructor<T>): ObjectSubstitute<OmitProxyMethods<T>, T> {
         const registered = this._registeredFakes.filter(x => x.registered === type)[0];
         if(!registered)
             throw new Error('The instance that was created from the requested type ' + ((type as any).name || type) + ' has not been registered as a fake. Perhaps it is no longer a dependency in the constructor of a class? Use the resolveInstance method instead if this was intentional.');
@@ -48,7 +48,7 @@ export class Autofaker {
         return instance as any;
     }
 
-    resolveInstance<T extends Constructor>(type: T): T {
+    resolveInstance<T>(type: Constructor<T>): T {
         const registered = this._registeredFakes.filter(x => x.registered === type)[0];
         if(registered)
             throw new Error('The instance that was created from the requested type ' + ((type as any).name || type) + ' has been registered as a fake because it is a dependency in the class ' + ((registered.containing as any).name || registered.containing) + '. Use the resolveFakeInstance method instead if this was intentional.');
@@ -61,5 +61,5 @@ export class Autofaker {
 export abstract class InversionOfControlRegistration {
     abstract registerTypeAsInstanceFromAccessor(type: Constructor<any>, accessor: () => any): void;
     abstract getConstructorArgumentTypesForClass<T extends Constructor>(type: T): Array<Constructor>;
-    abstract resolveInstance<T extends Constructor>(type: T): T;
+    abstract resolveInstance<T>(type: Constructor<T>): T;
 }
