@@ -7,6 +7,7 @@ var substitute_1 = __importDefault(require("@fluffy-spoon/substitute"));
 var Autofaker = /** @class */ (function () {
     function Autofaker() {
         this._registeredFakes = new Array();
+        this._lastRealType = null;
     }
     Autofaker.prototype.useInversionOfControlProvider = function (provider) {
         if (provider instanceof InversionOfControlRegistration)
@@ -35,16 +36,22 @@ var Autofaker = /** @class */ (function () {
     Autofaker.prototype.resolveFakeInstance = function (type) {
         var registered = this._registeredFakes.filter(function (x) { return x.registered === type; })[0];
         if (!registered)
-            throw new Error('The instance that was created from the requested type ' + (type.name || type) + ' has not been registered as a fake. Perhaps it is no longer a dependency in the constructor of a class? Use the resolveInstance method instead if this was intentional.');
+            throw new Error('The instance that was created from the requested type ' + this.extractClassName(type) + ' has not been registered as a fake. Perhaps it is no longer a dependency in the constructor of a class? Use the resolveInstance method instead if this was intentional.');
+        if (this._lastRealType)
+            throw new Error("Calling resolveFakeInstance(" + this.extractClassName(type) + ") after a resolveInstance(" + this.extractClassName(this._lastRealType) + ") call can have unintended side-effects and is not allowed. Make sure you resolve all your fake instances before resolving the real one (" + this.extractClassName(this._lastRealType) + ").");
         var instance = this._registration.resolveInstance(type);
         return instance;
     };
     Autofaker.prototype.resolveInstance = function (type) {
         var registered = this._registeredFakes.filter(function (x) { return x.registered === type; })[0];
         if (registered)
-            throw new Error('The instance that was created from the requested type ' + (type.name || type) + ' has been registered as a fake because it is a dependency in the class ' + (registered.containing.name || registered.containing) + '. Use the resolveFakeInstance method instead if this was intentional.');
+            throw new Error('The instance that was created from the requested type ' + this.extractClassName(type) + ' has been registered as a fake because it is a dependency in the class ' + this.extractClassName(registered.containing) + '. Use the resolveFakeInstance method instead if this was intentional.');
+        this._lastRealType = type;
         var instance = this._registration.resolveInstance(type);
         return instance;
+    };
+    Autofaker.prototype.extractClassName = function (cls) {
+        return cls.name || cls;
     };
     return Autofaker;
 }());
