@@ -1,10 +1,14 @@
-declare type Constructor<T = any> = {
+export declare type Constructor<T = any> = {
     new (...args: any[]): T;
 };
-export declare class Autofaker {
+export interface IAutofaker {
+    useProvider(provider: InversionOfControlRegistration | FakeGenerator): void;
+    registerFakesForConstructorParameterTypesOf<T extends Constructor>(type: T): void;
+}
+export declare class Autofaker implements IAutofaker {
     private _registration;
     private _fakeGenerator;
-    use(provider: InversionOfControlRegistration | FakeGenerator): void;
+    useProvider(provider: InversionOfControlRegistration | FakeGenerator): void;
     registerFakesForConstructorParameterTypesOf<T extends Constructor>(type: T): void;
 }
 export declare abstract class InversionOfControlRegistration {
@@ -21,4 +25,3 @@ export declare class FakeInstanceFactory {
     readonly accessor: () => any;
     constructor(_type: Constructor, _accessor: () => any);
 }
-export {};

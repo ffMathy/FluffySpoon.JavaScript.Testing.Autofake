@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Autofaker = /** @class */ (function () {
     function Autofaker() {
     }
-    Autofaker.prototype.use = function (provider) {
+    Autofaker.prototype.useProvider = function (provider) {
         if (provider instanceof InversionOfControlRegistration)
             this._registration = provider;
         else if (provider instanceof FakeGenerator)

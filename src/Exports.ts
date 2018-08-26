@@ -1,10 +1,15 @@
-type Constructor<T = any> = { new(...args): T };
+export type Constructor<T = any> = { new(...args): T };
 
-export class Autofaker {
+export interface IAutofaker {
+    useProvider(provider: InversionOfControlRegistration|FakeGenerator): void;
+    registerFakesForConstructorParameterTypesOf<T extends Constructor>(type: T): void;
+}
+
+export class Autofaker implements IAutofaker {
     private _registration: InversionOfControlRegistration;
     private _fakeGenerator: FakeGenerator;
 
-    use(provider: InversionOfControlRegistration|FakeGenerator) {
+    useProvider(provider: InversionOfControlRegistration|FakeGenerator) {
         if(provider instanceof InversionOfControlRegistration)
             this._registration = provider;
         else if(provider instanceof FakeGenerator)
