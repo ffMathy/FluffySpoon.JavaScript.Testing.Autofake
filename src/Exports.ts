@@ -6,6 +6,7 @@ export type Constructor<T = any> = { new(...args): T };
 
 export class Autofaker {
     private _registration: InversionOfControlRegistration;
+    private _hasResolvedRealInstance: boolean;
 
     private readonly _registeredFakes: Array<{
         registered: Constructor,
@@ -14,6 +15,7 @@ export class Autofaker {
 
     constructor() {
         this._registeredFakes = new Array();
+        this._hasResolvedRealInstance = false;
     }
 
     useInversionOfControlProvider(provider: InversionOfControlRegistration) {
@@ -44,6 +46,9 @@ export class Autofaker {
         if(!registered)
             throw new Error('The instance that was created from the requested type ' + ((type as any).name || type) + ' has not been registered as a fake. Perhaps it is no longer a dependency in the constructor of a class? Use the resolveInstance method instead if this was intentional.');
 
+        if(this._hasResolvedRealInstance)
+            throw new Error(`Calling resolveFakeInstance after a resolveInstance call can have unintended side-effects and is not allowed. Make sure you resolve all your fake instances before resolving the real one.`);
+
         const instance = this._registration.resolveInstance(type);
         return instance as any;
     }
@@ -52,6 +57,8 @@ export class Autofaker {
         const registered = this._registeredFakes.filter(x => x.registered === type)[0];
         if(registered)
             throw new Error('The instance that was created from the requested type ' + ((type as any).name || type) + ' has been registered as a fake because it is a dependency in the class ' + ((registered.containing as any).name || registered.containing) + '. Use the resolveFakeInstance method instead if this was intentional.');
+
+        this._hasResolvedRealInstance = true;
 
         const instance = this._registration.resolveInstance(type);
         return instance as any;
