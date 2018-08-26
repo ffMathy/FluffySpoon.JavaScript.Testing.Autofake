@@ -8,6 +8,8 @@ export interface IAutofaker {
 }
 export declare class Autofaker implements IAutofaker {
     private _registration;
+    private readonly _registeredFakes;
+    constructor();
     useInversionOfControlProvider(provider: InversionOfControlRegistration): void;
     registerFakesForConstructorParameterTypesOf<T extends Constructor>(type: T): void;
     resolveFakeInstance<T extends Constructor>(type: T): ObjectSubstitute<OmitProxyMethods<T>, T>;

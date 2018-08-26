@@ -16,7 +16,7 @@
         "typescript": "^3.0.1"
     },
     "dependencies": {
-        "@fluffy-spoon/substitute": "^1.0.59",
+        "@fluffy-spoon/substitute": "^1.0.61",
         "reflect-metadata": "^0.1.12"
     },
     "ava": {
