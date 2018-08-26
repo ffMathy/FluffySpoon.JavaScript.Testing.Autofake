@@ -2,11 +2,7 @@ import { ObjectSubstitute, OmitProxyMethods } from '@fluffy-spoon/substitute/dis
 export declare type Constructor<T = any> = {
     new (...args: any[]): T;
 };
-export interface IAutofaker {
-    useInversionOfControlProvider(provider: InversionOfControlRegistration): void;
-    registerFakesForConstructorParameterTypesOf<T extends Constructor>(type: T): void;
-}
-export declare class Autofaker implements IAutofaker {
+export declare class Autofaker {
     private _registration;
     private readonly _registeredFakes;
     constructor();
