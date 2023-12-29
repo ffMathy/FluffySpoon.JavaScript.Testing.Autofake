@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "@fluffy-spoon/substitute": "^1.0.61",
-        "reflect-metadata": "^0.1.12"
+        "reflect-metadata": "^0.1.14"
     },
     "ava": {
         "files": [
